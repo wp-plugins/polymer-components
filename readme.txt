@@ -4,7 +4,7 @@ Tags: plugin,google,shortcode,page,posts,Post
 Donate link: http://www.blocknot.es/home/me/
 Requires at least: 3.5.0
 Tested up to: 4.0
-Stable tag: trunk
+Stable tag: 1.0.1
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 

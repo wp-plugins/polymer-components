@@ -4,7 +4,7 @@ Tags: plugin,google,shortcode,page,posts,Post
 Donate link: http://www.blocknot.es/home/me/
 Requires at least: 3.5.0
 Tested up to: 4.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -47,14 +47,14 @@ You can add your Javascript code inside a theme / child theme and / or use a plu
 
 == Upgrade Notice ==
 
-= 1.0.1 =
-* Small fix
+= 1.0.2 =
+* Small fix for admin docs
 = 1.0.0 =
 * First release
 
 == Changelog ==
 
-= 1.0.1 =
-* Small fix
+= 1.0.2 =
+* Small fix for admin docs
 = 1.0.0 =
 * First release

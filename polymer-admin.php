@@ -17,7 +17,7 @@ class polymer_admin
 
 	function admin_init()
 	{
-		wp_register_script( 'poly-admin-scripts', plugin_dir_url( __FILE__ ) . 'polymer-components-admin.js', array() );
+		wp_register_script( 'poly-admin-scripts', plugin_dir_url( __FILE__ ) . 'polymer-admin.js', array() );
 		wp_enqueue_script( 'poly-admin-scripts' );
 	}
 

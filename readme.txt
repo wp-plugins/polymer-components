@@ -24,6 +24,7 @@ Options: style, id, class, etc.
 
 Examples:
 
+* [poly core-icon icon="favorite"][/poly]
 * [poly paper-checkbox][/poly]
 * [poly paper-button raised style="color: green"]A green button[/poly]
 * [poly paper-item icon="home" label="Test link"]<a href="http://www.google.it" target="_blank"></a>[/poly]
@@ -46,10 +47,14 @@ You can add your Javascript code inside a theme / child theme and / or use a plu
 
 == Upgrade Notice ==
 
-= 0.1.0 =
+= 1.0.1 =
+* Small fix
+= 1.0.0 =
 * First release
 
 == Changelog ==
 
-= 0.1.0 =
+= 1.0.1 =
+* Small fix
+= 1.0.0 =
 * First release

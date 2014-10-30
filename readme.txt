@@ -40,13 +40,13 @@ Examples:
 = How can I interact with the Polymer elements? =
 
 You can add your Javascript code for your page or post, under the content editor there is a textarea in Polymer components meta box.
-Example code to open a dialog from a button click:
+Sample code to open a dialog from a button click:
 
-		window.addEventListener('polymer-ready', function(e) {
-		  document.querySelector('#btn_test').addEventListener('click', function(e) {
-		    document.querySelector('#my-dialog').toggle();
-		  });
-		});
+	window.addEventListener('polymer-ready', function(e) {
+	  document.querySelector('#btn_test').addEventListener('click', function(e) {
+	    document.querySelector('#my-dialog').toggle();
+	  });
+	});
 
 == Screenshots ==
 
@@ -54,7 +54,7 @@ Example code to open a dialog from a button click:
 
 == Upgrade Notice ==
 
-= 1.0.5 =
+= 1.0.6 =
 * Added Javascript textarea to posts and pages
 = 1.0.2 =
 * Small fix for admin docs
@@ -63,7 +63,7 @@ Example code to open a dialog from a button click:
 
 == Changelog ==
 
-= 1.0.5 =
+= 1.0.6 =
 * Added Javascript textarea to posts and pages
 = 1.0.2 =
 * Small fix for admin docs

@@ -33,25 +33,32 @@ class polymer_admin
 			if( $pos > 0 ) $groups[substr( $tag, 0, $pos )][] = $tag;
 		}
 		echo '<div id="poly_page_options">', "\n";
-		echo '<h4 style="margin: 10px 0 5px 0">Iconsets:</h4><div style="font-size: 9pt">';
+		echo '<div><b>Iconsets</b>:&nbsp; <span style="font-size: 9pt">';
 		foreach( $polycomponents->iconsets as $iconset => $file )
 		{
 			echo '<span style="padding-right: 18px"><input type="checkbox" id="chk_', $iconset, '" name="', $iconset, '"', in_array( $iconset, $iconsets ) ? ' checked="checked"' : '',' />';
 			echo '<label for="chk_', $iconset, '">', $iconset, '</label></span> ';
 		}
-		echo "</div><hr/>\n";
+		$sep = '';
+		echo "</span></div>\n<div style=\"padding-top: 10px; padding-bottom: 10px\">\n";
 		foreach( $groups as $group => $tags )
 		{
 			$url = 'http://www.polymer-project.org/';
 			if( $group == 'core' ) $url = 'http://www.polymer-project.org/docs/elements/core-elements.html';
 			else if( $group == 'paper' ) $url = 'http://www.polymer-project.org/docs/elements/paper-elements.html';
-			echo '<h4 style="margin: 10px 0 5px 0">', $group, ':</h4><select id="sel_', $group, '" onchange="Javascript: polyDocs( \'', $url, '\', \'', $group, '\' );" style="font-size: 9pt">';
+			//echo '<h4 style="margin: 10px 0 5px 0">', $group, ':</h4>';
+			echo $sep, '<b>', $group, '</b>:&nbsp; ';
+			echo '<select id="sel_', $group, '" onchange="Javascript: polyDocs( \'', $url, '\', \'', $group, '\' );" style="font-size: 9pt">';
 			echo '<option>-</option>';
 			foreach( $tags as $tag ) echo '<option>', $tag, '</option>';
 			echo "</select>\n ";
-			echo '&laquo; <a href="', $url, '" id="docs_', $group, '" target="_blank">docs</a>';
+			echo '&laquo; <a href="', $url, '" id="docs_', $group, '" target="_blank">open docs</a>';
+			if( $sep == '' ) $sep = ' &nbsp;&ndash;&nbsp; ';
 		}
 		echo "</div>\n";
+		echo '<div><b>Javascript code</b>:</div>';
+		$val = get_post_meta( $post->ID, 'poly_javascript', TRUE );
+		echo '<textarea name="poly_javascript" style="width: 100%" cols="80" rows="6">', stripslashes( $val ), '</textarea>', "\n";
 	}
 
 	function save_post( $post_id )
@@ -78,6 +85,8 @@ class polymer_admin
 			if( isset( $_POST[$iconset] ) && !empty( $_POST[$iconset] ) ) $iconsets[] = $iconset;
 		}
 		update_post_meta( $post_id, 'poly_iconsets', serialize( $iconsets ) );
+
+		if( isset( $_POST['poly_javascript'] ) && !empty( $_POST['poly_javascript'] ) ) update_post_meta( $post_id, 'poly_javascript', addslashes( $_POST['poly_javascript'] ) );
 
 		//var_dump( $_POST ); exit;
 		/* if( isset( $_POST['lq_body_padding_top'] ) )

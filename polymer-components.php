@@ -3,7 +3,7 @@
  * Plugin Name: Polymer Components
  * Plugin URI: http://blocknot.es/
  * Description: Add Polymer support to your website!
- * Version: 1.0.2
+ * Version: 1.0.6
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3

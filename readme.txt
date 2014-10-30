@@ -4,7 +4,7 @@ Tags: plugin,google,shortcode,page,posts,Post
 Donate link: http://www.blocknot.es/home/me/
 Requires at least: 3.5.0
 Tested up to: 4.0
-Stable tag: 1.0.2
+Stable tag: 1.0.6
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -39,7 +39,14 @@ Examples:
 
 = How can I interact with the Polymer elements? =
 
-You can add your Javascript code inside a theme / child theme and / or use a plugin to insert Javascript code in the post.
+You can add your Javascript code for your page or post, under the content editor there is a textarea in Polymer components meta box.
+Example code to open a dialog from a button click:
+
+		window.addEventListener('polymer-ready', function(e) {
+		  document.querySelector('#btn_test').addEventListener('click', function(e) {
+		    document.querySelector('#my-dialog').toggle();
+		  });
+		});
 
 == Screenshots ==
 
@@ -47,6 +54,8 @@ You can add your Javascript code inside a theme / child theme and / or use a plu
 
 == Upgrade Notice ==
 
+= 1.0.5 =
+* Added Javascript textarea to posts and pages
 = 1.0.2 =
 * Small fix for admin docs
 = 1.0.0 =
@@ -54,6 +63,8 @@ You can add your Javascript code inside a theme / child theme and / or use a plu
 
 == Changelog ==
 
+= 1.0.5 =
+* Added Javascript textarea to posts and pages
 = 1.0.2 =
 * Small fix for admin docs
 = 1.0.0 =

@@ -109,8 +109,6 @@ class polymer_components
 			add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ) );
 			add_action( 'wp_head', array( &$this, 'wp_head' ) );
 		}
-		//add_action( 'after_setup_theme', array( &$this, 'after_setup_theme' ) );
-		add_action( 'init', array( &$this, 'init' ) );
 		add_filter( 'is_protected_meta', array( &$this, 'is_protected_meta' ), 10, 2 );              // Hide internal meta
 		remove_filter( 'the_content', 'wpautop' );                                                   // >>> Disable automatic formatting inside WordPress shortcodes
 		add_filter( 'the_content', 'wpautop' , 99 );
@@ -118,34 +116,10 @@ class polymer_components
 		//add_filter( 'no_texturize_shortcodes', array( &$this, 'no_texturize_shortcodes' ), 10, 4 );  // <<<
 	}
 
-	function after_setup_theme()
-	{	// action
-		//remove_filter( 'the_content', 'wp_strip_all_tags' );
-		//remove_filter( 'the_excerpt', 'wp_strip_all_tags' );
-		//global $allowedposttags;
-		//$allowedposttags['ccc'] = array();
-		//var_dump( $allowedposttags['ccc'] );
-	}
-
-	function init()
-	{	// action
-		//remove_filter('the_content', 'wpautop');
-		//remove_filter('the_content', 'wptexturize');
-		//remove_filter('pre_user_description', 'wp_filter_kses');
-		//kses_remove_filters();
-	}
-	/*function init()
-	{	// action
-		global $allowedposttags, $allowedtags;
-
-		$allowedposttags['paper-button'] = array();
-		$allowedtags['paper-button'] = array();
-	} */
-
 	function is_protected_meta( $protected, $meta_key )
 	{	// filter
 		// hide some meta key from custom fields of the editor
-		return $meta_key == 'poly_tags' ? TRUE : $protected;
+		return ( $meta_key == 'poly_tags' || $meta_key == 'poly_iconsets' || $meta_key == 'poly_javascript' ) ? TRUE : $protected;
 	}
 
 	//function no_texturize_shortcodes()
@@ -181,6 +155,10 @@ class polymer_components
 				$iconsets = unserialize( $poly_iconsets );
 				foreach( $iconsets as $iconset ) if( isset( $this->iconsets[$iconset] ) ) echo '<link rel="import" href="', plugin_dir_url( __FILE__ ), 'components/', $this->iconsets[$iconset], "\" />\n";
 			}
+			$poly_javascript = get_post_meta( $post->ID, 'poly_javascript', TRUE );
+			echo '<script type="text/javascript">', "\n";
+			echo stripslashes( $poly_javascript ), "\n";
+			echo "</script>\n";
 		}
 	}
 }

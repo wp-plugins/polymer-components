@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Polymer Components
  * Plugin URI: http://blocknot.es/
- * Description: Add Polymer support to your website!
- * Version: 1.0.6
+ * Description: Add Polymer elements to your website!
+ * Version: 1.1.0
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3
@@ -81,6 +81,8 @@ class polymer_components
 		'paper-tabs'               => 'paper-tabs/paper-tabs.html',
 		'paper-toast'              => 'paper-toast/paper-toast.html',
 		'paper-toggle-button'      => 'paper-toggle-button/paper-toggle-button.html',
+	// misc
+		'polymer-element'          => 'polymer/polymer.html',
 	);
 	var $requirements = array(
 		'paper-dialog' => 'paper-dialog-transition',
@@ -101,9 +103,11 @@ class polymer_components
 		'png-icons'           => 'core-icons/png-icons.html',
 		'social-icons'        => 'core-icons/social-icons.html',
 	);
+	var $options;
 
 	function __construct()
 	{
+		$this->options = get_option( 'polymer-options' );
 		if( !is_admin() )
 		{
 			add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ) );

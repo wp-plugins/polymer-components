@@ -4,3 +4,5 @@
  * Author URI: http://blocknot.es
  * License: GPL3
  */
+
+#polymer-settings .form-table  td, #polymer-settings .form-table  th { padding-top: 4px; padding-bottom: 4px; }

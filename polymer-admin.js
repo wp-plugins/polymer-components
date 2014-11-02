@@ -20,4 +20,19 @@ window.onload = function() {
 			smartIndent: false
 		});
 	}
+
+	/* var editor_container = document.getElementById( 'wp-content-editor-container' );
+	if( editor_container != null )
+	{
+		var textarea = editor_container.getElementsByTagName( 'textarea' );
+		if( textarea.length > 0 )
+		{
+			CodeMirror.fromTextArea( textarea[0], {
+				dragDrop: false,
+				indentWithTabs: true,
+				lineNumbers: true,
+				smartIndent: false
+			});
+		}
+	} */
 };

@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-define( 'PLUGIN_MAIN', 'polymer-components/polymer-components.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'conf.php' );
 
 class polymer_admin
 {
@@ -15,18 +15,23 @@ class polymer_admin
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'save_post', array( &$this, 'save_post' ) );
 	// --- Filters ---
-		add_filter( 'plugin_action_links_' . PLUGIN_MAIN, array( &$this, 'plugin_action_links' ), 10, 1 );
+		add_filter( 'plugin_action_links_' . POLYMER_COMPONENTS_MAIN, array( &$this, 'plugin_action_links' ), 10, 1 );
 	}
 
 	function add_meta_boxes()
 	{	// action
-		add_meta_box( 'polymer_meta', __( 'Polymer components', 'liquid-theme' ), array( &$this, 'polymer_meta' ), 'post', 'normal', 'high' );
-		add_meta_box( 'polymer_meta', __( 'Polymer components', 'liquid-theme' ), array( &$this, 'polymer_meta' ), 'page', 'normal', 'high' );
+		add_meta_box( 'polymer_meta', __( 'Polymer Components', 'liquid-theme' ), array( &$this, 'polymer_meta' ), 'post', 'normal', 'high' );
+		add_meta_box( 'polymer_meta', __( 'Polymer Components', 'liquid-theme' ), array( &$this, 'polymer_meta' ), 'page', 'normal', 'high' );
 	}
 
 	function admin_init()
 	{	// action
 		$this->options = get_option( 'polymer-options' );
+		if( $this->options === FALSE )
+		{	// default values
+			$this->options = unserialize( POLYMER_OPTIONS );
+		}
+	// Styles and scripts
 		wp_enqueue_style( 'poly-admin-style', plugin_dir_url( __FILE__ ) . 'polymer-admin.css' );
 		wp_enqueue_style( 'poly-admin-codemirror-style', plugin_dir_url( __FILE__ ) . 'codemirror/codemirror.css' );
 		wp_register_script( 'poly-admin-scripts', plugin_dir_url( __FILE__ ) . 'polymer-admin.js', array() );
@@ -67,7 +72,7 @@ class polymer_admin
 	{	// action
 		add_options_page(
 			'Settings Admin', 
-			'Polymer settings', 
+			'Polymer Components', 
 			'manage_options', 
 			'polymer-settings', 
 			array( $this, 'create_admin_page' )
@@ -79,7 +84,8 @@ class polymer_admin
 ?>
 	<div id="polymer-settings" class="wrap">
 		<?php screen_icon(); ?>
-		<h2>Polymer settings</h2>
+		<h2>Polymer Components</h2>
+		<hr/>
 		<form method="post" action="options.php">
 		<?php
 			settings_fields( 'polymer-settings-general' );
@@ -93,22 +99,12 @@ class polymer_admin
 
 	function field_js_pages()
 	{
-		if( $this->options !== FALSE )
-		{
-			$checked = isset( $this->options['polymer-js-pages'] ) && !empty( $this->options['polymer-js-pages'] );
-		}
-		else $checked = TRUE;
-		echo '<input type="checkbox" id="polymer-js-pages" name="polymer-options[polymer-js-pages]"', $checked ? ' checked="checked"' : '', '/> <label for="polymer-js-pages">', __('Javascript editor in pages'), '</label>';
+		echo '<input type="checkbox" id="polymer-js-pages" name="polymer-options[polymer-js-pages]"', !empty( $this->options['polymer-js-pages'] ) ? ' checked="checked"' : '', '/> <label for="polymer-js-pages">', __('Javascript editor in pages'), '</label>';
 	}
 
 	function field_js_posts()
 	{
-		if( $this->options !== FALSE )
-		{
-			$checked = isset( $this->options['polymer-js-posts'] ) && !empty( $this->options['polymer-js-posts'] );
-		}
-		else $checked = TRUE;
-		echo '<input type="checkbox" id="polymer-js-posts" name="polymer-options[polymer-js-posts]"', $checked ? ' checked="checked"' : '', '/> <label for="polymer-js-posts">', __('Javascript editor in posts'), '</label>';
+		echo '<input type="checkbox" id="polymer-js-posts" name="polymer-options[polymer-js-posts]"', !empty( $this->options['polymer-js-posts'] ) ? ' checked="checked"' : '', '/> <label for="polymer-js-posts">', __('Javascript editor in posts'), '</label>';
 	}
 
 	function plugin_action_links( $links )

@@ -2,14 +2,16 @@
 /**
  * Plugin Name: Polymer Components
  * Plugin URI: http://blocknot.es/
- * Description: Add Polymer support to your website!
- * Version: 1.0.6
+ * Description: Add Polymer elements to your website!
+ * Version: 1.1.2
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3
  *
  * Note: polymer with bower; removed: core-scroll-header-panel/demos, google-code-prettify, polymer-test-tools, web-animations-js/test, web-animations-js/tools, web-animations-js/tutorial
  */
+require_once( plugin_dir_path( __FILE__ ) . 'conf.php' );
+
 class polymer_components
 {
 	var $tags = array(
@@ -81,6 +83,8 @@ class polymer_components
 		'paper-tabs'               => 'paper-tabs/paper-tabs.html',
 		'paper-toast'              => 'paper-toast/paper-toast.html',
 		'paper-toggle-button'      => 'paper-toggle-button/paper-toggle-button.html',
+	// misc
+		'polymer-element'          => 'polymer/polymer.html',
 	);
 	var $requirements = array(
 		'paper-dialog' => 'paper-dialog-transition',
@@ -101,9 +105,15 @@ class polymer_components
 		'png-icons'           => 'core-icons/png-icons.html',
 		'social-icons'        => 'core-icons/social-icons.html',
 	);
+	var $options;
 
 	function __construct()
 	{
+		$this->options = get_option( 'polymer-options' );
+		if( $this->options === FALSE )
+		{	// default values
+			$this->options = unserialize( POLYMER_OPTIONS );
+		}
 		if( !is_admin() )
 		{
 			add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ) );
@@ -165,6 +175,6 @@ class polymer_components
 
 $polycomponents = new polymer_components();
 
-require plugin_dir_path( __FILE__ ) . 'polymer-shortcodes.php';
+require( plugin_dir_path( __FILE__ ) . 'polymer-shortcodes.php' );
 
-if( is_admin() ) require plugin_dir_path( __FILE__ ) . 'polymer-admin.php';
+if( is_admin() ) require( plugin_dir_path( __FILE__ ) . 'polymer-admin.php' );

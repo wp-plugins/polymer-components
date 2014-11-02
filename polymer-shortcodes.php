@@ -1,4 +1,6 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class polymer_shortcodes
 {
 	function __construct()

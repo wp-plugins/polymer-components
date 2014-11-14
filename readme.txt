@@ -4,7 +4,7 @@ Tags: plugin,google,shortcode,page,posts,Post
 Donate link: http://www.blocknot.es/home/me/
 Requires at least: 3.5.0
 Tested up to: 4.0
-Stable tag: 1.1.2
+Stable tag: 1.2.0
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -69,6 +69,10 @@ Yes, you can use the *polymer-element* tag in posts and pages included the scrip
 
 == Upgrade Notice ==
 
+= 1.2.0 =
+* New widget
+* Auto-import improved
+* Small fix to JS editor
 = 1.1.2 =
 * Small fix and changes to settings
 = 1.1.0 =
@@ -81,6 +85,10 @@ Yes, you can use the *polymer-element* tag in posts and pages included the scrip
 
 == Changelog ==
 
+= 1.2.0 =
+* New widget
+* Auto-import improved
+* Small fix to JS editor
 = 1.1.2 =
 * Small fix and changes to settings
 = 1.1.0 =

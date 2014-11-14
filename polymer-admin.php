@@ -2,6 +2,7 @@
 if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 require_once( plugin_dir_path( __FILE__ ) . 'conf.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'inc/ganon.php' );
 
 class polymer_admin
 {
@@ -168,18 +169,23 @@ class polymer_admin
 		global $polycomponents;
 		if( wp_is_post_revision( $post_id ) ) return;
 		$post = get_post( $post_id );
-		$content = do_shortcode( $post->post_content );
+		$content = apply_filters( 'the_content', $post->post_content );
+		///$content = do_shortcode( $post->post_content );
+
 		$meta = array();
-		foreach( $polycomponents->tags as $tag => $include )
+		$dom = str_get_dom( $content );
+		foreach( $dom( '*' ) as $element )
 		{
-			if( strpos( $content, '<' . $tag ) !== FALSE )
+			$tag = $element->tag;
+			if( isset( $polycomponents->tags[$tag] ) )
 			{
 				$meta[$tag] = TRUE;
 				if( isset( $polycomponents->requirements[$tag] ) ) $meta[$polycomponents->requirements[$tag]] = TRUE;
+				if( $element->icon !== NULL ) $meta[POLYMER_CORE_ICONS] = TRUE;
 			}
 		}
 		update_post_meta( $post_id, 'poly_tags', serialize( array_keys( $meta ) ) );
-		//update_post_meta( $post_id, 'poly_tags', sanitize_text_field( $_REQUEST['book_author'] ) );
+		//update_post_meta( $post_id, 'poly_tags', sanitize_text_field( array_keys( $meta ) ) );
 
 		$iconsets = array();
 		foreach( $polycomponents->iconsets as $iconset => $file )
@@ -188,7 +194,7 @@ class polymer_admin
 		}
 		update_post_meta( $post_id, 'poly_iconsets', serialize( $iconsets ) );
 
-		if( isset( $_POST['poly_javascript'] ) && !empty( $_POST['poly_javascript'] ) ) update_post_meta( $post_id, 'poly_javascript', addslashes( $_POST['poly_javascript'] ) );
+		update_post_meta( $post_id, 'poly_javascript', addslashes( $_POST['poly_javascript'] ) );
 	}
 }
 

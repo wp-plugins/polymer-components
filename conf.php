@@ -7,3 +7,5 @@ $polymer_options = array(
 	'polymer-js-posts' => TRUE
 );
 define( 'POLYMER_OPTIONS', serialize( $polymer_options ) );
+
+define( 'POLYMER_CORE_ICONS', 'core-icons' );

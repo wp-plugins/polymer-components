@@ -38,9 +38,11 @@ class polymer_admin
 		wp_register_script( 'poly-admin-scripts', plugin_dir_url( __FILE__ ) . 'polymer-admin.js', array() );
 		wp_register_script( 'poly-admin-codemirror', plugin_dir_url( __FILE__ ) . 'codemirror/codemirror.min.js', array() );
 		wp_register_script( 'poly-admin-codemirror-js', plugin_dir_url( __FILE__ ) . 'codemirror/javascript.js', array() );
+		wp_register_script( 'poly-admin-codemirror-css', plugin_dir_url( __FILE__ ) . 'codemirror/css.js', array() );
 		wp_enqueue_script( 'poly-admin-scripts' );
 		wp_enqueue_script( 'poly-admin-codemirror' );
 		wp_enqueue_script( 'poly-admin-codemirror-js' );
+		wp_enqueue_script( 'poly-admin-codemirror-css' );
 	// Settings
 		register_setting(
 			'polymer-settings-general',
@@ -87,6 +89,7 @@ class polymer_admin
 		<?php screen_icon(); ?>
 		<h2>Polymer Components</h2>
 		<hr/>
+		<div>Polymer version provided: <b><?php echo POLYMER_VERSION; ?></b></div>
 		<form method="post" action="options.php">
 		<?php
 			settings_fields( 'polymer-settings-general' );
@@ -119,21 +122,16 @@ class polymer_admin
 		global $polycomponents;
 		$val = get_post_meta( $post->ID, 'poly_iconsets', TRUE );
 		$iconsets = !empty( $val ) ? unserialize( $val ) : array();
+		$autop = get_post_meta( $post->ID, 'poly_autop', TRUE );
+		$template = get_post_meta( $post->ID, 'poly_template', TRUE );
 		$groups = array();
 		foreach( $polycomponents->tags as $tag => $file )
 		{
 			$pos = strpos( $tag, '-' );
 			if( $pos > 0 ) $groups[substr( $tag, 0, $pos )][] = $tag;
 		}
-		echo '<div id="poly_page_options">', "\n";
-		echo '<div><b>Iconsets</b>:&nbsp; <span style="font-size: 9pt">';
-		foreach( $polycomponents->iconsets as $iconset => $file )
-		{
-			echo '<span style="padding-right: 18px"><input type="checkbox" id="chk_', $iconset, '" name="', $iconset, '"', in_array( $iconset, $iconsets ) ? ' checked="checked"' : '',' />';
-			echo '<label for="chk_', $iconset, '">', $iconset, '</label></span> ';
-		}
-		$sep = '';
-		echo "</span></div>\n<div style=\"padding-top: 10px; padding-bottom: 10px\">\n";
+	// --- Docs ---
+		echo '<div style="padding-top: 10px">';
 		foreach( $groups as $group => $tags )
 		{
 			$url = 'http://www.polymer-project.org/';
@@ -150,15 +148,33 @@ class polymer_admin
 			if( $sep == '' ) $sep = ' &nbsp;&ndash;&nbsp; ';
 		}
 		echo "</div>\n";
+	// --- Options ---
+		echo '<div id="poly_page_options">', "\n";
+		echo '<div style="padding-top: 10px">';
+		echo '<label for="poly_autop"><b>Enable autop</b>:</label> <input type="checkbox" id="poly_autop" name="poly_autop"', empty( $autop ) ? '' : ' checked="checked"', '/> &ndash; ';
+		echo '<label for="poly_template"><b>Override template</b>:</label> <input type="checkbox" id="poly_template" name="poly_template"', empty( $template ) ? '' : ' checked="checked"', '/>';
+		echo '</div><div style="padding-top: 10px"><b>Import iconsets</b>:&nbsp; <span style="font-size: 9pt">';
+		foreach( $polycomponents->iconsets as $iconset => $file )
+		{
+			echo '<span style="padding-right: 18px"><input type="checkbox" id="chk_', $iconset, '" name="', $iconset, '"', in_array( $iconset, $iconsets ) ? ' checked="checked"' : '',' />';
+			echo '<label for="chk_', $iconset, '">', $iconset, '</label></span> ';
+		}
+		$sep = '';
+		echo "</span></div>\n";
+	// --- JS editor ---
 		if(      $post->post_type == 'post' ) $poly_javascript = isset( $this->options['polymer-js-posts'] ) && !empty( $this->options['polymer-js-posts'] );
 		else if( $post->post_type == 'page' ) $poly_javascript = isset( $this->options['polymer-js-pages'] ) && !empty( $this->options['polymer-js-pages'] );
 		else $poly_javascript = FALSE;
 		if( $poly_javascript )
 		{
-			echo '<div style="border-bottom: 1px solid #aaa; padding-bottom: 5px"><b>Javascript code</b>:</div>';
+			echo '<div style="border-bottom: 1px solid #aaa; padding-top: 10px; padding-bottom: 5px"><b>Javascript code</b>:</div>';
 			$val = get_post_meta( $post->ID, 'poly_javascript', TRUE );
 			echo '<textarea name="poly_javascript" id="poly_javascript" style="width: 100%" cols="80" rows="6">', stripslashes( $val ), '</textarea>', "\n";
 		}
+	// --- CSS editor ---
+		echo '<div style="border-bottom: 1px solid #aaa; padding-top: 10px; padding-bottom: 5px"><b>Styles</b>:</div>';
+		$val = get_post_meta( $post->ID, 'poly_styles', TRUE );
+		echo '<textarea name="poly_styles" id="poly_styles" style="width: 100%" cols="80" rows="6">', stripslashes( $val ), '</textarea>', "\n";
 		echo "</div>\n";
 	}
 
@@ -187,14 +203,17 @@ class polymer_admin
 		update_post_meta( $post_id, 'poly_tags', serialize( array_keys( $meta ) ) );
 		//update_post_meta( $post_id, 'poly_tags', sanitize_text_field( array_keys( $meta ) ) );
 
+		update_post_meta( $post_id, 'poly_autop', isset( $_POST['poly_autop'] ) && !empty( $_POST['poly_autop'] ) );
+		update_post_meta( $post_id, 'poly_template', isset( $_POST['poly_template'] ) && !empty( $_POST['poly_template'] ) );
+
 		$iconsets = array();
 		foreach( $polycomponents->iconsets as $iconset => $file )
 		{
 			if( isset( $_POST[$iconset] ) && !empty( $_POST[$iconset] ) ) $iconsets[] = $iconset;
 		}
 		update_post_meta( $post_id, 'poly_iconsets', serialize( $iconsets ) );
-
-		update_post_meta( $post_id, 'poly_javascript', addslashes( $_POST['poly_javascript'] ) );
+		update_post_meta( $post_id, 'poly_javascript', ( isset( $_POST['poly_javascript'] ) && !empty( $_POST['poly_javascript'] ) ) ? addslashes( $_POST['poly_javascript'] ) : '' );
+		update_post_meta( $post_id, 'poly_styles', ( isset( $_POST['poly_styles'] ) && !empty( $_POST['poly_styles'] ) ) ? addslashes( $_POST['poly_styles'] ) : '' );
 	}
 }
 

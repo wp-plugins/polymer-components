@@ -3,7 +3,7 @@
  * Plugin Name: Polymer Components
  * Plugin URI: http://blocknot.es/
  * Description: Add Polymer elements to your website!
- * Version: 1.2.0
+ * Version: 1.2.5
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3
@@ -106,6 +106,7 @@ class polymer_components
 		'social-icons'        => 'core-icons/social-icons.html',
 	);
 	var $options;
+	var $import = array();
 
 	function __construct()
 	{
@@ -114,10 +115,14 @@ class polymer_components
 		{	// default values
 			$this->options = unserialize( POLYMER_OPTIONS );
 		}
-		if( !is_admin() ) add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ) );
+		if( !is_admin() )
+		{
+			add_filter( 'template_include', array( &$this, 'template_include' ), 99, 1 );
+			add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ) );
+			add_action( 'wp_head', array( &$this, 'wp_head' ) );
+		}
 		add_filter( 'is_protected_meta', array( &$this, 'is_protected_meta' ), 10, 2 );              // Hide internal meta
 		remove_filter( 'the_content', 'wpautop' );                                                   // >>> Disable automatic formatting inside WordPress shortcodes
-		add_filter( 'the_content', 'wpautop' , 99 );
 		add_filter( 'the_content', 'shortcode_unautop', 100 );
 		//add_filter( 'no_texturize_shortcodes', array( &$this, 'no_texturize_shortcodes' ), 10, 4 );  // <<<
 		add_action( 'widgets_init', array( &$this, 'widgets_init' ) );
@@ -136,6 +141,17 @@ class polymer_components
 	//	return $shortcodes;
 	//}
 
+	function template_include( $template )
+	{
+		global $post;
+		if( is_singular() )
+		{
+			$poly_template = get_post_meta( $post->ID, 'poly_template', TRUE );
+			if( !empty( $poly_template ) ) return plugin_dir_path( __FILE__ ) . 'polymer-template.php';
+		}
+		return $template;
+	}
+
 	function widgets_init()
 	{
 		register_widget( 'Polymer_Widget' );
@@ -145,27 +161,31 @@ class polymer_components
 	{	// action
 		global $post;
 		wp_enqueue_script( 'polymer-platform-script', plugin_dir_url( __FILE__ ) . 'components/platform/platform.js', array() );
-		$list = array();
 		if( is_singular() )
 		{	// Single posts and pages
+		// --- autop ---
+			$poly_autop = get_post_meta( $post->ID, 'poly_autop', TRUE );
+			if( !empty( $poly_autop ) ) add_filter( 'the_content', 'wpautop' , 99 );
+		// --- Poly import ---
 			$poly_tags = get_post_meta( $post->ID, 'poly_tags', TRUE );
 			if( !empty( $poly_tags ) )
 			{
 				$tags = unserialize( $poly_tags );
 				foreach( $tags as $tag )
 				{
-					if(      isset( $this->tags[$tag]  ) ) $list[$tag] = $this->tags[$tag];
-					else if( isset( $this->extra[$tag] ) ) $list[$tag] = $this->extra[$tag];
+					if(      isset( $this->tags[$tag]  ) ) $this->import[$tag] = $this->tags[$tag];
+					else if( isset( $this->extra[$tag] ) ) $this->import[$tag] = $this->extra[$tag];
 				}
 			}
+		// --- Poly iconsets ---
 			$poly_iconsets = get_post_meta( $post->ID, 'poly_iconsets', TRUE );
 			if( !empty( $poly_iconsets ) )
 			{
 				$iconsets = unserialize( $poly_iconsets );
-				foreach( $iconsets as $iconset ) if( isset( $this->iconsets[$iconset] ) ) echo '<link rel="import" href="', plugin_dir_url( __FILE__ ), 'components/', $this->iconsets[$iconset], "\" />\n";
+				foreach( $iconsets as $iconset ) if( isset( $this->iconsets[$iconset] ) ) $this->import[$iconset] = $this->iconsets[$iconset];
 			}
-			$poly_javascript = get_post_meta( $post->ID, 'poly_javascript', TRUE );
-			if( !empty( $poly_javascript ) ) echo "<script type=\"text/javascript\">\n", stripslashes( $poly_javascript ), "\n</script>\n";
+			$this->javascript = get_post_meta( $post->ID, 'poly_javascript', TRUE );
+			$this->styles = get_post_meta( $post->ID, 'poly_styles', TRUE );
 		}
 		//var_dump( is_active_sidebar( is_active_widget( FALSE, FALSE, 'polymer_widget' ) ) );
 		$polymer_widget = is_active_widget( FALSE, FALSE, 'polymer_widget' );
@@ -179,13 +199,19 @@ class polymer_components
 					$tags = unserialize( $widget['tags'] );
 					foreach( $tags as $tag )
 					{
-						if(      isset( $this->tags[$tag]  ) ) $list[$tag] = $this->tags[$tag];
-						else if( isset( $this->extra[$tag] ) ) $list[$tag] = $this->extra[$tag];
+						if(      isset( $this->tags[$tag]  ) ) $this->import[$tag] = $this->tags[$tag];
+						else if( isset( $this->extra[$tag] ) ) $this->import[$tag] = $this->extra[$tag];
 					}
 				}
 			}
 		}
-		foreach( $list as $tag => $import ) echo '<link rel="import" href="', plugin_dir_url( __FILE__ ), 'components/', $import,  "\" />\n";
+	}
+
+	function wp_head()
+	{
+		foreach( $this->import as $tag => $import ) echo '<link rel="import" href="', plugin_dir_url( __FILE__ ), 'components/', $import,  "\" />\n";
+		if( isset( $this->javascript ) && !empty( $this->javascript ) ) echo "<script type=\"text/javascript\">\n", stripslashes( $this->javascript ), "\n</script>\n";
+		if( isset( $this->styles ) && !empty( $this->styles ) ) echo "<style type=\"text/css\">\n", stripslashes( $this->styles ), "\n</style>\n";
 	}
 }
 

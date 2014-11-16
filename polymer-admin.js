@@ -17,6 +17,19 @@ window.onload = function() {
 			dragDrop: false,
 			indentWithTabs: true,
 			lineNumbers: true,
+			mode: 'javascript',
+			smartIndent: false
+		});
+	}
+
+	var poly_styles = document.getElementById( 'poly_styles' );
+	if( poly_styles != null )
+	{
+		CodeMirror.fromTextArea( poly_styles, {
+			dragDrop: false,
+			indentWithTabs: true,
+			lineNumbers: true,
+			mode: 'css',
 			smartIndent: false
 		});
 	}
@@ -31,6 +44,7 @@ window.onload = function() {
 				dragDrop: false,
 				indentWithTabs: true,
 				lineNumbers: true,
+				mode: 'html',
 				smartIndent: false
 			});
 		}

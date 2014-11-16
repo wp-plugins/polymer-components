@@ -4,7 +4,7 @@ Tags: plugin,google,shortcode,page,posts,Post
 Donate link: http://www.blocknot.es/home/me/
 Requires at least: 3.5.0
 Tested up to: 4.0
-Stable tag: 1.2.0
+Stable tag: 1.2.5
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -16,12 +16,18 @@ Polymer brings an implementation of Google Material Design to the web.
 This plugin allows to add Polymer elements in your posts and pages. The same components used in Android Lollypop. You can use the HTML editor with the Polymer tags or the shortcode *[poly]* for all the elements. The correct HTML libraries will be loaded automatically when you use a Polymer tag.
 Polymer documentation page: http://www.polymer-project.org/
 
+Notice: Polymer is still in developer preview so some constructs may change in future and a modern browser is required to run Polymer apps.
+
 Features:
 
 * Polymer tags directly available (core & paper) in posts and pages with the HTML editor;
+* Polymer widget;
 * [poly] shortcode to access to the Polymer tags;
 * auto import the necessary HTML components;
 * Javascript editor in posts / pages admin;
+* CSS editor in posts / pages admin;
+* autop on/off option;
+* template override on/off option;
 * documentation links for each tag.
 
 Shortcode syntax: [poly ELEMENT-TAG ELEMENT-OPTIONS]
@@ -36,6 +42,11 @@ Examples:
 	[poly paper-checkbox][/poly]
 	[poly paper-button raised style="color: green"]A green button[/poly]
 	[poly paper-item icon="home" label="Test link"]<a href="http://www.google.it" target="_blank"></a>[/poly]
+
+Notes:
+
+* autop option: the autop() Wordpress function adds p and br tags to the post content when a newline is found, but this can break the Polymer tags. That's why I have added this option that disable by default the autop function
+* template override option: if this option is enabled this plugin will load a special template which provides only the required components to run a Polymer app. This is useful if you want a "fullscreen" Polymer app
 
 == Installation ==
 
@@ -59,7 +70,7 @@ Sample code to open a dialog from a button click:
 
 = Can I create my elements? =
 
-Yes, you can use the *polymer-element* tag in posts and pages included the script block.
+Yes, you can use the *polymer-element* tag in posts and pages also with script blocks.
 
 == Screenshots ==
 
@@ -69,6 +80,10 @@ Yes, you can use the *polymer-element* tag in posts and pages included the scrip
 
 == Upgrade Notice ==
 
+= 1.2.5 =
+* New CSS editor for posts / pages
+* New options: autop, override template
+* Internal improvements
 = 1.2.0 =
 * New widget
 * Auto-import improved
@@ -77,14 +92,16 @@ Yes, you can use the *polymer-element* tag in posts and pages included the scrip
 * Small fix and changes to settings
 = 1.1.0 =
 * New settings screen
-* New settings: JS in pages / posts
+* New settings: JS in posts / pages
 * Improved Javascript editor
 * Added polymer-element tag
-= 1.0.6 =
-* Added Javascript textarea to posts and pages
 
 == Changelog ==
 
+= 1.2.5 =
+* New CSS editor for posts / pages
+* New options: autop, override template
+* Internal improvements
 = 1.2.0 =
 * New widget
 * Auto-import improved
@@ -93,11 +110,11 @@ Yes, you can use the *polymer-element* tag in posts and pages included the scrip
 * Small fix and changes to settings
 = 1.1.0 =
 * New settings screen
-* New settings: JS in pages / posts
+* New settings: JS in posts / pages
 * Improved Javascript editor
 * Added polymer-element tag
 = 1.0.6 =
-* Added Javascript textarea to posts and pages
+* New Javascript editor for posts / pages
 = 1.0.2 =
 * Small fix for admin docs
 = 1.0.0 =

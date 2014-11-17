@@ -1,5 +1,5 @@
 <?php
-define( 'POLYMER_VERSION', '0.4.2' );
+define( 'POLYMER_VERSION', '0.5.1' );
 
 define( 'POLYMER_COMPONENTS_MAIN', 'polymer-components/polymer-components.php' );
 

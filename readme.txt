@@ -13,7 +13,7 @@ Polymer brings an implementation of Google Material Design to the web.
 
 == Description ==
 
-This plugin allows to add Polymer elements in your posts and pages, the same components used in Android Lollypop. You can use the HTML editor with the Polymer tags or the shortcode *[poly]* for all the elements. The correct HTML libraries will be loaded automatically.
+This plugin allows to add Polymer elements to your posts and pages, the same components used in Android Lollypop. You can use the HTML editor with the Polymer tags or the shortcode *[poly]* for all the elements. The correct HTML libraries will be loaded automatically.
 Polymer documentation page: http://www.polymer-project.org/
 
 Notice: Polymer is still in *developer* *preview* so some constructs may change in future. A modern browser is required to run Polymer apps.

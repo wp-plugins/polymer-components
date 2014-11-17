@@ -5,6 +5,8 @@ define( 'POLYMER_COMPONENTS_MAIN', 'polymer-components/polymer-components.php' )
 
 // Default options values
 $polymer_options = array(
+	'polymer-css-pages' => TRUE,
+	'polymer-css-posts' => TRUE,
 	'polymer-js-pages' => TRUE,
 	'polymer-js-posts' => TRUE
 );

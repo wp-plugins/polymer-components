@@ -50,24 +50,38 @@ class polymer_admin
 			//, array( $this, 'sanitize' ) // Sanitize
 		);
 		add_settings_section(
-			'polymer-section-general', // ID
-			'General settings', // Title
-			array( $this, 'print_section_info' ), // Callback
-			'polymer-settings' // Page
+			'polymer-section-general',
+			'General settings',
+			array( $this, 'print_section_info' ),
+			'polymer-settings'
 		);
 		add_settings_field(
-			'polymer-js-posts', // ID
-			'JS in posts', // Title 
-			array( $this, 'field_js_posts' ), // Callback
-			'polymer-settings', // Page
-			'polymer-section-general' // Section           
+			'polymer-css-posts',
+			'CSS in posts',
+			array( $this, 'field_css_posts' ),
+			'polymer-settings',
+			'polymer-section-general'
 		);
 		add_settings_field(
-			'polymer-js-pages', // ID
-			'JS in pages', // Title 
-			array( $this, 'field_js_pages' ), // Callback
-			'polymer-settings', // Page
-			'polymer-section-general' // Section           
+			'polymer-css-pages',
+			'CSS in pages',
+			array( $this, 'field_css_pages' ),
+			'polymer-settings',
+			'polymer-section-general'
+		);
+		add_settings_field(
+			'polymer-js-posts',
+			'JS in posts',
+			array( $this, 'field_js_posts' ),
+			'polymer-settings',
+			'polymer-section-general'
+		);
+		add_settings_field(
+			'polymer-js-pages',
+			'JS in pages',
+			array( $this, 'field_js_pages' ),
+			'polymer-settings',
+			'polymer-section-general'
 		);
 	}
 
@@ -99,6 +113,16 @@ class polymer_admin
 		</form>
 	</div>
 <?php
+	}
+
+	function field_css_pages()
+	{
+		echo '<input type="checkbox" id="polymer-css-pages" name="polymer-options[polymer-css-pages]"', !empty( $this->options['polymer-css-pages'] ) ? ' checked="checked"' : '', '/> <label for="polymer-css-pages">', __('Styles editor in pages'), '</label>';
+	}
+
+	function field_css_posts()
+	{
+		echo '<input type="checkbox" id="polymer-css-posts" name="polymer-options[polymer-css-posts]"', !empty( $this->options['polymer-css-posts'] ) ? ' checked="checked"' : '', '/> <label for="polymer-css-posts">', __('Styles editor in posts'), '</label>';
 	}
 
 	function field_js_pages()
@@ -172,9 +196,15 @@ class polymer_admin
 			echo '<textarea name="poly_javascript" id="poly_javascript" style="width: 100%" cols="80" rows="6">', stripslashes( $val ), '</textarea>', "\n";
 		}
 	// --- CSS editor ---
-		echo '<div style="border-bottom: 1px solid #aaa; padding-top: 10px; padding-bottom: 5px"><b>Styles</b>:</div>';
-		$val = get_post_meta( $post->ID, 'poly_styles', TRUE );
-		echo '<textarea name="poly_styles" id="poly_styles" style="width: 100%" cols="80" rows="6">', stripslashes( $val ), '</textarea>', "\n";
+		if(      $post->post_type == 'post' ) $poly_styles = isset( $this->options['polymer-css-posts'] ) && !empty( $this->options['polymer-css-posts'] );
+		else if( $post->post_type == 'page' ) $poly_styles = isset( $this->options['polymer-css-pages'] ) && !empty( $this->options['polymer-css-pages'] );
+		else $poly_styles = FALSE;
+		if( $poly_styles )
+		{
+			echo '<div style="border-bottom: 1px solid #aaa; padding-top: 10px; padding-bottom: 5px"><b>Styles</b>:</div>';
+			$val = get_post_meta( $post->ID, 'poly_styles', TRUE );
+			echo '<textarea name="poly_styles" id="poly_styles" style="width: 100%" cols="80" rows="6">', stripslashes( $val ), '</textarea>', "\n";
+		}
 		echo "</div>\n";
 	}
 

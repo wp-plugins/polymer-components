@@ -1,10 +1,10 @@
-=== Polymer Components ===
+=== Polymer for WordPress ===
 Contributors: blocknot.es
 Tags: plugin,google,shortcode,page,posts,Post
 Donate link: http://www.blocknot.es/home/me/
 Requires at least: 3.5.0
 Tested up to: 4.0
-Stable tag: 1.2.5
+Stable tag: trunk
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -13,16 +13,16 @@ Polymer brings an implementation of Google Material Design to the web.
 
 == Description ==
 
-This plugin allows to add Polymer elements in your posts and pages. The same components used in Android Lollypop. You can use the HTML editor with the Polymer tags or the shortcode *[poly]* for all the elements. The correct HTML libraries will be loaded automatically when you use a Polymer tag.
+This plugin allows to add Polymer elements in your posts and pages, the same components used in Android Lollypop. You can use the HTML editor with the Polymer tags or the shortcode *[poly]* for all the elements. The correct HTML libraries will be loaded automatically.
 Polymer documentation page: http://www.polymer-project.org/
 
-Notice: Polymer is still in developer preview so some constructs may change in future and a modern browser is required to run Polymer apps.
+Notice: Polymer is still in *developer* *preview* so some constructs may change in future. A modern browser is required to run Polymer apps.
 
 Features:
 
-* Polymer tags directly available (core & paper) in posts and pages with the HTML editor;
-* Polymer widget;
-* [poly] shortcode to access to the Polymer tags;
+* Polymer tags directly available (core & paper) in posts / pages in the HTML editor;
+* [poly] shortcode to access all tags;
+* simple widget;
 * auto import the necessary HTML components;
 * Javascript editor in posts / pages admin;
 * CSS editor in posts / pages admin;
@@ -45,7 +45,7 @@ Examples:
 
 Notes:
 
-* autop option: the autop() Wordpress function adds p and br tags to the post content when a newline is found, but this can break the Polymer tags. That's why I have added this option that disable by default the autop function
+* autop option: the autop() Wordpress function adds p and br tags to the contents when a newline is found, but this can break the Polymer tags. This option allows to enable/disable autop() in posts / pages (plugin default: no autop)
 * template override option: if this option is enabled this plugin will load a special template which provides only the required components to run a Polymer app. This is useful if you want a "fullscreen" Polymer app
 
 == Installation ==
@@ -80,6 +80,9 @@ Yes, you can use the *polymer-element* tag in posts and pages also with script b
 
 == Upgrade Notice ==
 
+= 1.2.8 =
+* New setting: CSS editor on/off
+* Small fix
 = 1.2.5 =
 * New CSS editor for posts / pages
 * New options: autop, override template
@@ -88,16 +91,12 @@ Yes, you can use the *polymer-element* tag in posts and pages also with script b
 * New widget
 * Auto-import improved
 * Small fix to JS editor
-= 1.1.2 =
-* Small fix and changes to settings
-= 1.1.0 =
-* New settings screen
-* New settings: JS in posts / pages
-* Improved Javascript editor
-* Added polymer-element tag
 
 == Changelog ==
 
+= 1.2.8 =
+* New setting: CSS editor on/off
+* Small fix
 = 1.2.5 =
 * New CSS editor for posts / pages
 * New options: autop, override template

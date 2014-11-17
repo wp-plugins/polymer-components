@@ -1,14 +1,18 @@
 <?php
 /**
- * Plugin Name: Polymer Components
+ * Plugin Name: Polymer for WordPress
  * Plugin URI: http://blocknot.es/
  * Description: Add Polymer elements to your website!
- * Version: 1.2.5
+ * Version: 1.2.8
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3
  *
  * Note: polymer with bower; removed: core-scroll-header-panel/demos, google-code-prettify, polymer-test-tools, web-animations-js/test, web-animations-js/tools, web-animations-js/tutorial
+ *
+ * ToDo:
+ * - Polymer 0.5.1
+ * - area to manage custom elements
  */
 require_once( plugin_dir_path( __FILE__ ) . 'conf.php' );
 
@@ -105,6 +109,7 @@ class polymer_components
 		'png-icons'           => 'core-icons/png-icons.html',
 		'social-icons'        => 'core-icons/social-icons.html',
 	);
+	var $hide_keys = array( 'poly_autop', 'poly_iconsets', 'poly_javascript', 'poly_styles', 'poly_tags', 'poly_template' );
 	var $options;
 	var $import = array();
 
@@ -131,7 +136,7 @@ class polymer_components
 	function is_protected_meta( $protected, $meta_key )
 	{	// filter
 		// hide some meta key from custom fields of the editor
-		return ( $meta_key == 'poly_tags' || $meta_key == 'poly_iconsets' || $meta_key == 'poly_javascript' ) ? TRUE : $protected;
+		return ( in_array( $meta_key, $this->hide_keys ) ? TRUE : $protected );
 	}
 
 	//function no_texturize_shortcodes()

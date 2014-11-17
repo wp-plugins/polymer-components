@@ -3,15 +3,14 @@
  * Plugin Name: Polymer for WordPress
  * Plugin URI: http://blocknot.es/
  * Description: Add Polymer elements to your website!
- * Version: 1.2.8
+ * Version: 1.3.0
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3
  *
- * Note: polymer with bower; removed: core-scroll-header-panel/demos, google-code-prettify, polymer-test-tools, web-animations-js/test, web-animations-js/tools, web-animations-js/tutorial
+ * Polymer from bower; removed: core-list/demos core-scroll-header-panel/demos google-code-prettify marked/test polymer-test-tools web-animations-next/test
  *
  * ToDo:
- * - Polymer 0.5.1
  * - area to manage custom elements
  */
 require_once( plugin_dir_path( __FILE__ ) . 'conf.php' );
@@ -41,8 +40,10 @@ class polymer_components
 		'core-icon-button'         => 'core-icon-button/core-icon-button.html',
 		'core-iconset'             => 'core-iconset/core-iconset.html',
 		'core-iconset-svg'         => 'core-iconset-svg/core-iconset-svg.html',
+		'core-image'               => 'core-image/core-image.html',
 		'core-input'               => 'core-input/core-input.html',
 		'core-item'                => 'core-item/core-item.html',
+		'core-label'               => 'core-label/core-label.html',
 		'core-list'                => 'core-list/core-list.html',
 		'core-localstorage'        => 'core-localstorage/core-localstorage.html',
 		'core-media-query'         => 'core-media-query/core-media-query.html',
@@ -70,6 +71,7 @@ class polymer_components
 		'paper-checkbox'           => 'paper-checkbox/paper-checkbox.html',
 		'paper-dialog-transition'  => 'paper-dialog/paper-dialog-transition.html',
 		'paper-dialog'             => 'paper-dialog/paper-dialog.html',
+		'paper-dropdown'           => 'paper-dropdown/paper-dropdown.html',
 		'paper-dropdown-menu'      => 'paper-dropdown-menu/paper-dropdown-menu.html',
 		'paper-fab'                => 'paper-fab/paper-fab.html',
 		'paper-focusable'          => 'paper-focusable/paper-focusable.html',
@@ -83,6 +85,7 @@ class polymer_components
 		'paper-ripple'             => 'paper-ripple/paper-ripple.html',
 		'paper-shadow'             => 'paper-shadow/paper-shadow.html',
 		'paper-slider'             => 'paper-slider/paper-slider.html',
+		'paper-spinner'            => 'paper-spinner/paper-spinner.html',
 		'paper-tab'                => 'paper-tabs/paper-tab.html',
 		'paper-tabs'               => 'paper-tabs/paper-tabs.html',
 		'paper-toast'              => 'paper-toast/paper-toast.html',
@@ -165,7 +168,7 @@ class polymer_components
 	function wp_enqueue_scripts()
 	{	// action
 		global $post;
-		wp_enqueue_script( 'polymer-platform-script', plugin_dir_url( __FILE__ ) . 'components/platform/platform.js', array() );
+		wp_enqueue_script( 'polymer-webcomponentsjs', plugin_dir_url( __FILE__ ) . 'components/webcomponentsjs/webcomponents.js', array() );
 		if( is_singular() )
 		{	// Single posts and pages
 		// --- autop ---

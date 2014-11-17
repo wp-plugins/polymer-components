@@ -4,7 +4,7 @@ Tags: plugin,google,shortcode,page,posts,Post
 Donate link: http://www.blocknot.es/home/me/
 Requires at least: 3.5.0
 Tested up to: 4.0
-Stable tag: trunk
+Stable tag: 1.3.0
 License: GPL3
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -13,10 +13,10 @@ Polymer brings an implementation of Google Material Design to the web.
 
 == Description ==
 
-This plugin allows to add Polymer elements to your posts and pages, the same components used in Android Lollipop. You can use the HTML editor with the Polymer tags or the shortcode *[poly]* for all the elements. The correct HTML libraries will be loaded automatically.
-Polymer website: http://www.polymer-project.org/
+This plugin allows to add Polymer elements in your posts and pages, the same components used in Android Lollypop. You can use the HTML editor with the Polymer tags or the shortcode *[poly]* for all the elements. The correct HTML libraries will be loaded automatically.
+Polymer documentation page: http://www.polymer-project.org/
 
-Notice: Polymer is still in *developer* *preview*, some constructs may change in future. A modern browser is required to run Polymer apps.
+Notice: Polymer is still in *developer* *preview* so some constructs may change in future. A modern browser is required to run Polymer apps.
 
 Features:
 
@@ -80,6 +80,8 @@ Yes, you can use the *polymer-element* tag in posts and pages also with script b
 
 == Upgrade Notice ==
 
+= 1.3.0 =
+* Update Polymer to 0.5.1
 = 1.2.8 =
 * New setting: CSS editor on/off
 * Small fix
@@ -94,6 +96,8 @@ Yes, you can use the *polymer-element* tag in posts and pages also with script b
 
 == Changelog ==
 
+= 1.3.0 =
+* Update Polymer to 0.5.1
 = 1.2.8 =
 * New setting: CSS editor on/off
 * Small fix

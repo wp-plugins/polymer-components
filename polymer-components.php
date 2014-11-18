@@ -3,7 +3,7 @@
  * Plugin Name: Polymer for WordPress
  * Plugin URI: http://blocknot.es/
  * Description: Add Polymer elements to your website!
- * Version: 1.3.0
+ * Version: 1.3.1
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3
@@ -66,6 +66,7 @@ class polymer_components
 		'core-tooltip'             => 'core-tooltip/core-tooltip.html',
 		'core-transition'          => 'core-transition/core-transition.html',
 	// paper
+		'paper-action-dialog'      => 'paper-dialog/paper-action-dialog.html',
 		'paper-button-base'        => 'paper-button/paper-button-base.html',
 		'paper-button'             => 'paper-button/paper-button.html',
 		'paper-checkbox'           => 'paper-checkbox/paper-checkbox.html',

@@ -6,7 +6,8 @@
  */
 function polyDocs( url, group )
 {	// admin
-	document.getElementById( 'docs_' + group ).href = url + '#' + document.getElementById( 'sel_' + group ).value;
+	var val = document.getElementById( 'sel_' + group ).value;
+	document.getElementById( 'docs_' + group ).href = url + ( ( val != '-' ) ? ( '#' + val ) : '' );
 }
 
 window.onload = function() {

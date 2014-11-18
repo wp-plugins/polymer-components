@@ -14,18 +14,19 @@ Polymer brings an implementation of Google Material Design to the web.
 == Description ==
 
 This plugin allows to add Polymer elements to your posts and pages, the same components used in Android Lollipop. You can use the HTML editor with the Polymer tags or the shortcode *[poly]* for all the elements. The correct HTML libraries will be loaded automatically.
-Polymer website:: http://www.polymer-project.org/
+Polymer website: http://www.polymer-project.org/
 
 Notice: Polymer is still in *developer* *preview*, some constructs may change in future. A modern browser is required to run Polymer web apps.
 
 **Features**
 
-* Polymer tags directly available (core & paper) in posts / pages in the HTML editor;
+* Polymer tags directly available (core & paper) in posts / pages with the HTML editor;
 * [poly] shortcode to access all tags;
 * simple widget;
 * auto import the necessary HTML components;
 * Javascript editor in posts / pages admin;
 * CSS editor in posts / pages admin;
+* import iconsets options;
 * autop on/off option;
 * template override on/off option;
 * documentation links for each tag.
@@ -84,11 +85,11 @@ Yes, you can use the *polymer-element* tag in posts and pages also with script b
 
 == Upgrade Notice ==
 
-= 1.3.1 =
-* Fix: paper-action-dialog
+= 1.3.2 =
+* New tags enabled
+* Small fix to docs links
 = 1.3.0 =
 * Updated Polymer to 0.5.1
-= 1.2.8 =
 * New setting: CSS editor on/off
 * Small fix
 = 1.2.5 =
@@ -102,8 +103,9 @@ Yes, you can use the *polymer-element* tag in posts and pages also with script b
 
 == Changelog ==
 
-= 1.3.1 =
-* Fix: paper-action-dialog
+= 1.3.2 =
+* New tags enabled
+* Small fix to docs links
 = 1.3.0 =
 * Updated Polymer to 0.5.1
 = 1.2.8 =

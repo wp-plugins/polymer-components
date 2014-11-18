@@ -12,7 +12,7 @@
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
 <?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class(); ?> unresolved>
 <?php
 // Start the Loop.
 while( have_posts() )

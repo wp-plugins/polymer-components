@@ -177,6 +177,7 @@ class polymer_admin
 			$pos = strpos( $tag, '-' );
 			if( $pos > 0 ) $groups[substr( $tag, 0, $pos )][] = $tag;
 		}
+		wp_nonce_field( 'polymer_meta', 'polymer_meta_nonce' );
 		echo '<div id="poly-page-options">', "\n";
 	// --- Docs ---
 		$sep = '';
@@ -247,7 +248,19 @@ class polymer_admin
 	function save_post( $post_id )
 	{	// action
 		global $polycomponents;
+		if( !isset( $_POST['polymer_meta_nonce'] ) ) return;                              // --- Return if nonce is not set
+		if( !wp_verify_nonce( $_POST['polymer_meta_nonce'], 'polymer_meta' ) ) return;    // --- Return if nonce is not valid
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;                       // --- Return if this is an autosave
+		if( isset( $_POST['post_type'] ) && $_POST['post_type'] == 'page' )               // --- Check the user's permissions
+		{
+			if( !current_user_can( 'edit_page', $post_id ) ) return;
+		}
+		else
+		{
+			if( !current_user_can( 'edit_post', $post_id ) ) return;
+		}
 		if( wp_is_post_revision( $post_id ) ) return;
+	// --- //
 		$post = get_post( $post_id );
 		$content = apply_filters( 'the_content', $post->post_content );
 		///$content = do_shortcode( $post->post_content );
@@ -264,20 +277,12 @@ class polymer_admin
 				if( $element->icon !== NULL ) $meta[POLYMER_CORE_ICONS] = TRUE;
 			}
 		}
-		update_post_meta( $post_id, 'poly_tags', serialize( array_keys( $meta ) ) );
 		//update_post_meta( $post_id, 'poly_tags', sanitize_text_field( array_keys( $meta ) ) );
-
+		update_post_meta( $post_id, 'poly_tags', serialize( array_keys( $meta ) ) );
 		update_post_meta( $post_id, 'poly_blocks', isset( $_POST['poly_blocks'] ) ? $_POST['poly_blocks'] : array() );
 		update_post_meta( $post_id, 'poly_iconsets', isset( $_POST['poly_iconsets'] ) ? $_POST['poly_iconsets'] : array() );
 		update_post_meta( $post_id, 'poly_autop', isset( $_POST['poly_autop'] ) && !empty( $_POST['poly_autop'] ) );
 		update_post_meta( $post_id, 'poly_template', isset( $_POST['poly_template'] ) && !empty( $_POST['poly_template'] ) );
-
-		/* $iconsets = array();
-		foreach( $polycomponents->iconsets as $iconset => $file )
-		{
-			if( isset( $_POST[$iconset] ) && !empty( $_POST[$iconset] ) ) $iconsets[] = $iconset;
-		}
-		update_post_meta( $post_id, 'poly_iconsets', serialize( $iconsets ) ); */
 		update_post_meta( $post_id, 'poly_javascript', ( isset( $_POST['poly_javascript'] ) && !empty( $_POST['poly_javascript'] ) ) ? addslashes( $_POST['poly_javascript'] ) : '' );
 		update_post_meta( $post_id, 'poly_styles', ( isset( $_POST['poly_styles'] ) && !empty( $_POST['poly_styles'] ) ) ? addslashes( $_POST['poly_styles'] ) : '' );
 	}

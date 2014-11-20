@@ -5,4 +5,14 @@
  * License: GPL3
  */
 
-#polymer-settings .form-table  td, #polymer-settings .form-table  th { padding-top: 4px; padding-bottom: 4px; }
+#polymer-settings .form-table  td, #polymer-settings .form-table  th {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+#poly-page-options label { font-weight: bold; }
+#poly-page-options .grp {
+	float: left;
+	padding-top: 10px;
+	padding-right: 10px;
+}

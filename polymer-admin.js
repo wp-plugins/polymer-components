@@ -45,7 +45,6 @@ window.onload = function() {
 				dragDrop: false,
 				indentWithTabs: true,
 				lineNumbers: true,
-				mode: 'html',
 				smartIndent: false
 			});
 		}

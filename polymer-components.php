@@ -3,7 +3,7 @@
  * Plugin Name: Polymer for WordPress
  * Plugin URI: http://blocknot.es/
  * Description: Add Polymer elements to your website!
- * Version: 1.3.2
+ * Version: 1.4.0
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3
@@ -11,7 +11,8 @@
  * Polymer from bower; removed: core-list/demos core-scroll-header-panel/demos google-code-prettify marked/test polymer-test-tools web-animations-next/test
  *
  * ToDo:
- * - area to manage custom elements
+ * - connect with JSON REST API plugin
+ * - call Blocks from Widget ?
  */
 require_once( plugin_dir_path( __FILE__ ) . 'conf.php' );
 
@@ -138,7 +139,29 @@ class polymer_components
 		remove_filter( 'the_content', 'wpautop' );                                                   // >>> Disable automatic formatting inside WordPress shortcodes
 		add_filter( 'the_content', 'shortcode_unautop', 100 );
 		//add_filter( 'no_texturize_shortcodes', array( &$this, 'no_texturize_shortcodes' ), 10, 4 );  // <<<
+		add_action( 'init', array( &$this, 'init' ) );
 		add_action( 'widgets_init', array( &$this, 'widgets_init' ) );
+	}
+
+	function init()
+	{	// action
+		$args = array(
+			'label' => 'Blocks',
+			'description' => 'Polymer code block',
+			'exclude_from_search' => TRUE,
+			'publicly_queryable' => TRUE,
+			// 'publicly_queryable' => FALSE,
+			'show_ui' => TRUE,
+			'show_in_nav_menus' => FALSE,
+			'show_in_menu' => TRUE,
+			'show_in_admin_bar' => FALSE,
+			'menu_position' => 22,
+			'capability_type' => 'page',
+			'supports' => array( 'title', 'editor' ),
+			'rewrite' => TRUE,
+			'query_var' => TRUE,
+		);
+		register_post_type( 'block', $args );
 	}
 
 	function is_protected_meta( $protected, $meta_key )
@@ -159,8 +182,12 @@ class polymer_components
 		global $post;
 		if( is_singular() )
 		{
-			$poly_template = get_post_meta( $post->ID, 'poly_template', TRUE );
-			if( !empty( $poly_template ) ) return plugin_dir_path( __FILE__ ) . 'polymer-template.php';
+			if( $post->post_type !== 'block' )
+			{
+				$poly_template = get_post_meta( $post->ID, 'poly_template', TRUE );
+				if( !empty( $poly_template ) ) return plugin_dir_path( __FILE__ ) . 'polymer-template.php';
+			}
+			else return plugin_dir_path( __FILE__ ) . 'polymer-block.php';
 		}
 		return $template;
 	}
@@ -173,12 +200,34 @@ class polymer_components
 	function wp_enqueue_scripts()
 	{	// action
 		global $post;
-		wp_enqueue_script( 'polymer-webcomponentsjs', plugin_dir_url( __FILE__ ) . 'components/webcomponentsjs/webcomponents.js', array() );
+//<link rel="import" href="http://mat.flnet.org:8080/wp_test/?block=age-slider">
+		wp_enqueue_script( 'polymer-webcomponentsjs', plugin_dir_url( __FILE__ ) . 'components/webcomponentsjs/webcomponents.min.js', array() );
 		if( is_singular() )
 		{	// Single posts and pages
 		// --- autop ---
 			$poly_autop = get_post_meta( $post->ID, 'poly_autop', TRUE );
 			if( !empty( $poly_autop ) ) add_filter( 'the_content', 'wpautop' , 99 );
+		// --- Blocks ---
+			$poly_blocks = get_post_meta( $post->ID, 'poly_blocks', TRUE );
+			foreach( $poly_blocks as $block )
+			{
+				$block_id = intval( $block );
+				if( $block_id > 0 )
+				{
+					$poly_tags = get_post_meta( $block_id, 'poly_tags', TRUE );
+					if( !empty( $poly_tags ) )
+					{
+						$tags = unserialize( $poly_tags );
+						foreach( $tags as $tag )
+						{
+							if(      isset( $this->tags[$tag]  ) ) $this->import[$tag] = $this->tags[$tag];
+							else if( isset( $this->extra[$tag] ) ) $this->import[$tag] = $this->extra[$tag];
+						}
+					}
+					$block_data = get_post( $block_id );
+					$this->blocks[$block_id] = $block_data->post_name;
+				}
+			}
 		// --- Poly import ---
 			$poly_tags = get_post_meta( $post->ID, 'poly_tags', TRUE );
 			if( !empty( $poly_tags ) )
@@ -192,11 +241,7 @@ class polymer_components
 			}
 		// --- Poly iconsets ---
 			$poly_iconsets = get_post_meta( $post->ID, 'poly_iconsets', TRUE );
-			if( !empty( $poly_iconsets ) )
-			{
-				$iconsets = unserialize( $poly_iconsets );
-				foreach( $iconsets as $iconset ) if( isset( $this->iconsets[$iconset] ) ) $this->import[$iconset] = $this->iconsets[$iconset];
-			}
+			if( !empty( $poly_iconsets ) ) foreach( $poly_iconsets as $iconset ) if( isset( $this->iconsets[$iconset] ) ) $this->import[$iconset] = $this->iconsets[$iconset];
 			$this->javascript = get_post_meta( $post->ID, 'poly_javascript', TRUE );
 			$this->styles = get_post_meta( $post->ID, 'poly_styles', TRUE );
 		}
@@ -223,6 +268,7 @@ class polymer_components
 	function wp_head()
 	{
 		foreach( $this->import as $tag => $import ) echo '<link rel="import" href="', plugin_dir_url( __FILE__ ), 'components/', $import,  "\" />\n";
+		if( isset( $this->blocks ) ) foreach( $this->blocks as $id => $block ) echo '<link rel="import" href="', esc_url( get_home_url() . '?block=' . $block ),  "\" />\n";
 		if( isset( $this->javascript ) && !empty( $this->javascript ) ) echo "<script type=\"text/javascript\">\n", stripslashes( $this->javascript ), "\n</script>\n";
 		if( isset( $this->styles ) && !empty( $this->styles ) ) echo "<style type=\"text/css\">\n", stripslashes( $this->styles ), "\n</style>\n";
 	}

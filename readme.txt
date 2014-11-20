@@ -52,6 +52,7 @@ Options: style, id, class, etc.
 * code blocks allows to create elements and import them directly from the Polymer box in posts / pages. They allows also to load JSON data, see FAQ for an example
 * autop option: the autop() Wordpress function adds p and br tags to the contents when a newline is found, but this can break the Polymer tags. This option allows to enable/disable autop() in posts / pages (plugin default: no autop)
 * template override option: if this option is enabled this plugin will load a special template which provides only the required components to run a Polymer app. This is useful if you want a "fullscreen" Polymer app
+* to create RESTful apps try *JSON REST API (WP API)* plugin. See FAQ for an example
 
 == Installation ==
 
@@ -83,6 +84,35 @@ You can create a Block with directly the JSON data, then in a post you can refer
 Example:
 
 	<core-ajax url="[block-url name='json-block-slug']" handleAs="json"></core-ajax>
+
+= Is it possible to work with JSON REST API plugin? =
+
+Sure. Here is an example that create a pages menu dinamically. Post content:
+
+	<core-ajax url="/wordpress/wp-json/pages" handleAs="json"></core-ajax>
+	<paper-dropdown-menu label="Pages">
+	  <paper-dropdown class="dropdown">
+	    <core-menu class="menu">
+	      <template id="menu" repeat="{{ pages }}">
+	        <paper-item noink><a href="{{slug}}">{{title}}</a></paper-item>
+	      </template>
+	    </core-menu>
+	  </paper-dropdown>
+	</paper-dropdown-menu>
+
+Javascript content:
+
+	window.addEventListener('polymer-ready', function(e) {
+	  var ajax = document.querySelector('core-ajax');
+	  var menu = document.querySelector('#menu');
+	  ajax.addEventListener('core-response', function(e) {
+	    var model = {
+	      pages: this.response
+	    };
+	    menu.model = model;
+	  });
+	  ajax.go();
+	});
 
 == Screenshots ==
 

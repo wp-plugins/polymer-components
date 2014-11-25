@@ -124,6 +124,8 @@ Javascript content:
 
 == Upgrade Notice ==
 
+= 1.4.2 =
+* Fix to blocks imports
 = 1.4.1 =
 * Security fix for meta box
 = 1.4.0 =
@@ -143,6 +145,8 @@ Javascript content:
 
 == Changelog ==
 
+= 1.4.2 =
+* Fix to blocks imports
 = 1.4.1 =
 * Security fix for meta box
 = 1.4.0 =

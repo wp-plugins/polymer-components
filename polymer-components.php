@@ -3,7 +3,7 @@
  * Plugin Name: Polymer for WordPress
  * Plugin URI: http://blocknot.es/
  * Description: Add Polymer elements to your website!
- * Version: 1.4.1
+ * Version: 1.4.2
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3
@@ -208,23 +208,26 @@ class polymer_components
 			if( !empty( $poly_autop ) ) add_filter( 'the_content', 'wpautop' , 99 );
 		// --- Blocks ---
 			$poly_blocks = get_post_meta( $post->ID, 'poly_blocks', TRUE );
-			foreach( $poly_blocks as $block )
+			if( !empty( $poly_blocks ) )
 			{
-				$block_id = intval( $block );
-				if( $block_id > 0 )
+				foreach( $poly_blocks as $block )
 				{
-					$poly_tags = get_post_meta( $block_id, 'poly_tags', TRUE );
-					if( !empty( $poly_tags ) )
+					$block_id = intval( $block );
+					if( $block_id > 0 )
 					{
-						$tags = unserialize( $poly_tags );
-						foreach( $tags as $tag )
+						$poly_tags = get_post_meta( $block_id, 'poly_tags', TRUE );
+						if( !empty( $poly_tags ) )
 						{
-							if(      isset( $this->tags[$tag]  ) ) $this->import[$tag] = $this->tags[$tag];
-							else if( isset( $this->extra[$tag] ) ) $this->import[$tag] = $this->extra[$tag];
+							$tags = unserialize( $poly_tags );
+							foreach( $tags as $tag )
+							{
+								if(      isset( $this->tags[$tag]  ) ) $this->import[$tag] = $this->tags[$tag];
+								else if( isset( $this->extra[$tag] ) ) $this->import[$tag] = $this->extra[$tag];
+							}
 						}
+						$block_data = get_post( $block_id );
+						$this->blocks[$block_id] = $block_data->post_name;
 					}
-					$block_data = get_post( $block_id );
-					$this->blocks[$block_id] = $block_data->post_name;
 				}
 			}
 		// --- Poly import ---

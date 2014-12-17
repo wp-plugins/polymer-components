@@ -124,6 +124,8 @@ Javascript content:
 
 == Upgrade Notice ==
 
+= 1.4.4 =
+* Updated Polymer to 0.5.2
 = 1.4.2 =
 * Fix to blocks imports
 = 1.4.1 =
@@ -138,13 +140,11 @@ Javascript content:
 * Updated Polymer to 0.5.1
 * New setting: CSS editor on/off
 * Small fix
-= 1.2.5 =
-* New CSS editor for posts / pages
-* New options: autop, override template
-* Internal improvements
 
 == Changelog ==
 
+= 1.4.4 =
+* Updated Polymer to 0.5.2
 = 1.4.2 =
 * Fix to blocks imports
 = 1.4.1 =

@@ -3,12 +3,12 @@
  * Plugin Name: Polymer for WordPress
  * Plugin URI: http://blocknot.es/
  * Description: Add Polymer elements to your website!
- * Version: 1.4.2
+ * Version: 1.4.4
  * Author: Mattia Roccoberton
  * Author URI: http://blocknot.es
  * License: GPL3
  *
- * Polymer from bower; removed: core-list/demos core-scroll-header-panel/demos google-code-prettify marked/test polymer-test-tools web-animations-next/test
+ * Polymer from bower; removed: core-tests core-list/demos core-scroll-header-panel/demos google-code-prettify marked/test polymer-test-tools web-animations-js/test
  *
  * ToDo:
  * - connect with JSON REST API plugin
@@ -55,8 +55,10 @@ class polymer_components
 		'core-overlay'              => 'core-overlay/core-overlay.html',
 		'core-pages'                => 'core-pages/core-pages.html',
 		'core-range'                => 'core-range/core-range.html',
+		'core-resizable'            => 'core-resizable/core-resizable.html',
 		'core-scaffold'             => 'core-scaffold/core-scaffold.html',
 		'core-scroll-header-panel'  => 'core-scroll-header-panel/core-scroll-header-panel.html',
+		'core-scroll-threshold'     => 'core-scroll-threshold/core-scroll-threshold.html',
 		'core-selection'            => 'core-selection/core-selection.html',
 		'core-selector'             => 'core-selector/core-selector.html',
 		'core-shared-lib'           => 'core-shared-lib/core-shared-lib.html',

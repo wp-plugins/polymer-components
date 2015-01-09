@@ -245,7 +245,7 @@ class polymer_components
 			}
 		// --- Poly iconsets ---
 			$poly_iconsets = get_post_meta( $post->ID, 'poly_iconsets', TRUE );
-			if( !empty( $poly_iconsets ) ) foreach( $poly_iconsets as $iconset ) if( isset( $this->iconsets[$iconset] ) ) $this->import[$iconset] = $this->iconsets[$iconset];
+			if( !empty( $poly_iconsets ) && is_array( $poly_iconsets ) ) foreach( $poly_iconsets as $iconset ) if( isset( $this->iconsets[$iconset] ) ) $this->import[$iconset] = $this->iconsets[$iconset];
 			$this->javascript = get_post_meta( $post->ID, 'poly_javascript', TRUE );
 			$this->styles = get_post_meta( $post->ID, 'poly_styles', TRUE );
 		}
